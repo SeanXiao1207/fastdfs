@@ -1,0 +1,34 @@
+version: '2'
+services:
+  tracker:
+    image: bbjreg.svicloud.com/tools/fastdfs:V3.8
+    network_mode: host
+    volumes:
+    - /opt/fdfs/tracker:/var/fdfs
+    ports:
+    - 22122:22122/tcp
+    command:
+    - tracker
+  storage0:
+    image: bbjreg.svicloud.com/tools/fastdfs:V3.8
+    environment:
+      TRACKER_SERVER: 192.168.100.1:22122
+    volumes:
+    - /opt/fdfs/storage0/fdfs0:/var/fdfs0
+    - /opt/fdfs/storage0/fdfs1:/var/fdfs1
+    - /opt/fdfs/storage0/fdfs2:/var/fdfs2
+    - /opt/fdfs/storage0/fdfs3:/var/fdfs3
+    - /opt/fdfs/storage0/fdfs4:/var/fdfs4
+    - /opt/fdfs/storage0/fdfs5:/var/fdfs5
+    - /opt/fdfs/storage0/fdfs6:/var/fdfs6
+    - /opt/fdfs/storage0/fdfs7:/var/fdfs7
+    - /opt/fdfs/storage0/fdfs8:/var/fdfs8
+    - /opt/fdfs/storage0/fdfs9:/var/fdfs9
+    - /opt/fdfs/storage0/fdfs10:/var/fdfs10
+    links:
+    - tracker:tracker
+    ports:
+    - 23000:23000/tcp
+    - 8888:8080/tcp
+    command:
+    - storage
