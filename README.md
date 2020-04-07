@@ -1,19 +1,24 @@
 # Docker for fastdfs-nginx
 
-[fastdfs](https://github.com/happyfish100/fastdfs)
+-将dockerfile文件上传到docker环境服务器(image也可以用https://github.com/happyfish100/fastdfs的)
+-执行构建镜像：docker build -t bbjreg.svicloud.com/tools/fastdfs:V3.0 .
+-上传镜像：docker push bbjreg.svicloud.com/tools/fastdfs:V3.0
 
-![Docker Automated build](https://img.shields.io/docker/cloud/automated/ygqygq2/fastdfs-nginx.svg) ![Docker Build Status](https://img.shields.io/docker/cloud/build/ygqygq2/fastdfs-nginx.svg) ![Docker Stars](https://img.shields.io/docker/stars/ygqygq2/fastdfs-nginx.svg) ![Docker Pulls](https://img.shields.io/docker/pulls/ygqygq2/fastdfs-nginx.svg)
+# docker-compose.yml
 
-# Supported tags and respective `Dockerfile` links
+-支持单机和双机（多机配置类同）部署，具体可以选择对应目录的docker-compose.yml文件即可
 
-- [`latest` (*Dockerfile*)](https://github.com/ygqygq2/fastdfs-nginx/blob/master/Dockerfile) [![](https://images.microbadger.com/badges/image/ygqygq2/fastdfs-nginx.svg)](http://microbadger.com/images/ygqygq2/fastdfs-nginx "Get your own image badge on microbadger.com")
+# Config
+
+- 多store路径配置：
+    -修改storage.conf和mod_fastdfs.conf的store_path_count=目录数，store_path数字下标=路径（store_path0=/var/fdfs0）
+    -storage配置对应映射目录
+- 多tracker配置：参考双机docker-compose.yml：
+    -配置多个tracker服务
+    -storage的TRACKER_SERVER指定对应的tracker地址
 
 ## Simplest docker run example
 
-```
-docker network create fastdfs-net
-docker run -dit --network=fastdfs-net --name tracker -v /var/fdfs/tracker:/var/fdfs ygqygq2/fastdfs-nginx:latest tracker
-docker run -dit --network=fastdfs-net --name storage0 -e TRACKER_SERVER=tracker:22122 -v /var/fdfs/storage0:/var/fdfs ygqygq2/fastdfs-nginx:latest storage
-docker run -dit --network=fastdfs-net --name storage1 -e TRACKER_SERVER=tracker:22122 -v /var/fdfs/storage1:/var/fdfs ygqygq2/fastdfs-nginx:latest storage
-```
+使用docker-compose的方式运行即可：
+例如：docker-compose up -d
 
